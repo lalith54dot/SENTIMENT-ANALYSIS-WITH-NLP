@@ -46,3 +46,11 @@ Maybe build a simple web app to enter reviews and get predictions.
 
 
 
+OUTPUT
+
+
+
+![Image](https://github.com/user-attachments/assets/a726103a-e69f-422a-b9cf-249d8538f591)
+
+
+
