@@ -1,0 +1,92 @@
+# Sentiment Analysis using TF-IDF and Logistic Regression (50 Reviews)
+
+import pandas as pd
+from sklearn.model_selection import train_test_split
+from sklearn.feature_extraction.text import TfidfVectorizer
+from sklearn.linear_model import LogisticRegression
+from sklearn.metrics import accuracy_score, classification_report, confusion_matrix
+
+# Step 1: Synthetic Dataset - 50 reviews and 50 corresponding sentiments
+reviews = [
+    "Absolutely love this! Works flawlessly.",
+    "Completely stopped working after 2 uses.",
+    "Amazing quality and premium feel.",
+    "Disappointed with the overall performance.",
+    "Fast delivery and excellent customer service.",
+    "Took forever to arrive and came damaged.",
+    "Highly recommended for daily use!",
+    "Wouldn't recommend it to anyone.",
+    "Great build and stylish look.",
+    "Fell apart after a few days.",
+    "Really happy with the features.",
+    "None of the features work properly.",
+    "Best purchase I've made recently.",
+    "Worst product I’ve bought online.",
+    "Exceeded my expectations.",
+    "Didn’t meet basic expectations.",
+    "Superb value for money.",
+    "Totally not worth the price.",
+    "Feels durable and reliable.",
+    "Cheap plastic and flimsy design.",
+    "Very helpful for my work.",
+    "Made my work even harder.",
+    "Perfect gift option.",
+    "My friend hated it.",
+    "Top-notch finish and quality.",
+    "Paint started peeling off.",
+    "Simple to use and understand.",
+    "Very confusing instructions.",
+    "Looks exactly as shown in the images.",
+    "Nothing like the pictures.",
+    "Comfortable and efficient.",
+    "Uncomfortable and noisy.",
+    "Battery lasts very long.",
+    "Battery dies too quickly.",
+    "Installation was super easy.",
+    "Installation is a nightmare.",
+    "Nice packaging and accessories.",
+    "Came without accessories.",
+    "Great product for the price.",
+    "Too expensive for what it offers.",
+    "Totally satisfied with my order.",
+    "Wish I never bought this.",
+    "Performs better than expected.",
+    "Performance is below average.",
+    "Will definitely buy again!",
+    "Never buying from this brand again.",
+    "Highly reliable and useful.",
+    "Completely useless in practice.",
+    "Loved every bit of it!",
+    "Hated every second using it."
+]
+
+sentiments = [
+    1, 0, 1, 0, 1, 0, 1, 0, 1, 0,
+    1, 0, 1, 0, 1, 0, 1, 0, 1, 0,
+    1, 0, 1, 0, 1, 0, 1, 0, 1, 0,
+    1, 0, 1, 0, 1, 0, 1, 0, 1, 0,
+    1, 0, 1, 0, 1, 0, 1, 0, 1, 0
+]
+
+# Step 2: Create DataFrame
+df = pd.DataFrame({'review': reviews, 'sentiment': sentiments})
+
+# Step 3: Split dataset
+X_train, X_test, y_train, y_test = train_test_split(df['review'], df['sentiment'], test_size=0.3, random_state=42)
+
+# Step 4: TF-IDF Vectorization
+vectorizer = TfidfVectorizer()
+X_train_tfidf = vectorizer.fit_transform(X_train)
+X_test_tfidf = vectorizer.transform(X_test)
+
+# Step 5: Logistic Regression Model
+model = LogisticRegression()
+model.fit(X_train_tfidf, y_train)
+
+# Step 6: Predictions
+y_pred = model.predict(X_test_tfidf)
+
+# Step 7: Evaluation
+print("Accuracy: {:.2f}%".format(accuracy_score(y_test, y_pred) * 100))
+print("\nClassification Report:\n", classification_report(y_test, y_pred, target_names=["Negative", "Positive"]))
+print("\nConfusion Matrix:\n", confusion_matrix(y_test, y_pred))
